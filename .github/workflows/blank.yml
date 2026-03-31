@@ -12,7 +12,7 @@ jobs:
       
       - name: Pull Docker Image (极速拉取)
         run: |
-          docker pull nousresearch/hermes-agent:v0.6.0
+          docker pull nousresearch/hermes-agent:latest
           
       - name: Save to Tar (打包成离线文件)
         run: |

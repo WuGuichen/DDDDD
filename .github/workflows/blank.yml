@@ -1,0 +1,26 @@
+name: Get Docker Image
+on:
+  workflow_dispatch: # 允许你手动点击按钮触发
+
+jobs:
+  download-and-save:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Free up disk space (避免大镜像爆掉免费主机的硬盘)
+        run: |
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android /usr/local/share/boost
+      
+      - name: Pull Docker Image (极速拉取)
+        run: |
+          docker pull nousresearch/hermes-agent:v0.6.0
+          
+      - name: Save to Tar (打包成离线文件)
+        run: |
+          docker save -o hermes-agent.tar nousresearch/hermes-agent:v0.6.0
+          
+      - name: Upload Artifact (传回给你下载)
+        uses: actions/upload-artifact@v4
+        with:
+          name: hermes-agent-offline-package
+          path: hermes-agent.tar
+          compression-level: 0 # 不二次压缩，节省打包时间
